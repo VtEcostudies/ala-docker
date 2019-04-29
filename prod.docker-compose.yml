@@ -50,7 +50,7 @@ services:
     image: nginx:alpine
     container_name: webserver
     environment:
-      - VIRTUAL_HOST=beta.bioatlas.se,auth.bioatlas.se
+      - VIRTUAL_HOST=beta.vtatlasoflife.org,auth.bioatlas.se
     volumes:
       #- ./env/.htpasswd:/etc/nginx/htpasswd
       - ./webserver/app.conf:/etc/nginx/conf.d/app.conf:ro
@@ -60,7 +60,7 @@ services:
   visualizer:
     image: dockersamples/visualizer:stable
     environment:
-      - VIRTUAL_HOST=visualizer.bioatlas.se
+      - VIRTUAL_HOST=visualizer.beta.vtatlasoflife.org
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:

@@ -1,12 +1,12 @@
 [{
- "label": "Collective Of Provinces",
+ "label": "Counties",
  "fid": "cl10000"
 },
 {
- "label": "Provinces(Landskap)",
+ "label": "Towns",
  "fid": "cl10001"
 },
 {
- "label": "Counties",
+ "label": "Biophysical Regions",
  "fid": "cl10002"
 }]

@@ -5,10 +5,10 @@ networks:
     external: true
 
 secrets:
-  bioatlas.se.crt:
-    file: ./nginx-proxy-certs/bioatlas.se.crt
-  bioatlas.se.key:
-    file: ./nginx-proxy-certs/bioatlas.se.key
+  beta.vtatlasoflife.org.crt:
+    file: ./nginx-proxy-certs/beta.vtatlasoflife.org.crt
+  beta.vtatlasoflife.org.key:
+    file: ./nginx-proxy-certs/beta.vtatlasoflife.org.key
 
 configs:
   config_nginx-proxy:
@@ -77,10 +77,10 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock
     secrets:
-      - source: bioatlas.se.crt
-        target: /etc/nginx/certs/bioatlas.se.crt
-      - source: bioatlas.se.key
-        target: /etc/nginx/certs/bioatlas.se.key
+      - source: beta.vtatlasoflife.org.crt
+        target: /etc/nginx/certs/beta.vtatlasoflife.org.crt
+      - source: beta.vtatlasoflife.org.key
+        target: /etc/nginx/certs/beta.vtatlasoflife.org.key
     configs:
       - source: config_nginx-proxy
         target: /etc/nginx/conf.d/nginx-proxy.conf
@@ -94,7 +94,7 @@ services:
   webserver:
     image: nginx:alpine
     environment:
-      - VIRTUAL_HOST=beta.bioatlas.se,auth.bioatlas.se
+      - VIRTUAL_HOST=beta.vtatlasoflife.org,auth.bioatlas.se
     configs:
       #- ./env/.htpasswd:/etc/nginx/htpasswd
       - source: config_webserver

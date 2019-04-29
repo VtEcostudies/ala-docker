@@ -2,7 +2,7 @@
 
 VERSION = $(TRAVIS_BUILD_ID)
 ME = $(USER)
-HOST = bioatlas.se
+HOST = beta.vtatlasoflife.org
 TS := $(shell date '+%Y_%m_%d_%H_%M')
 PWD := $(shell pwd)
 UID := $(shell id -u)
@@ -171,7 +171,7 @@ dotfiles: secrets htpasswd
 	touch dotfiles
 
 htpasswd:
-	docker run --rm -it httpd:alpine htpasswd -nb admin admin > env/.htpasswd
+	docker run --rm -it httpd:alpine htpasswd -nb admin EatArugula > env/.htpasswd
 
 init-clean:
 	@echo "Removing cached files from the build"
@@ -233,17 +233,25 @@ build:
 	@docker build -t bioatlas/ala-apikey -t bioatlas/ala-apikey:v0.3 apikey
 	@docker build -t bioatlas/ala-cassandra -t bioatlas/ala-cassandra:v0.3 cassandra3
 	@docker build -t bioatlas/ala-solr -t bioatlas/ala-solr:v0.3 solr7
-	@docker build -t bioatlas/ala-dyntaxaindex -t bioatlas/ala-dyntaxaindex:v0.3 dyntaxa-index
-	@docker build -t bioatlas/ala-nameindex -t bioatlas/ala-nameindex:v0.3 nameindex
-#	@docker build -t bioatlas/ala-dashboard -t bioatlas/ala-dashboard:v0.3 dashboard
+#	@docker build -t bioatlas/ala-dyntaxaindex -t bioatlas/ala-dyntaxaindex:v0.3 dyntaxa-index
+#	@docker build -t bioatlas/ala-nameindex -t bioatlas/ala-nameindex:v0.3 nameindex
+	@docker build -t bioatlas/ala-dashboard -t bioatlas/ala-dashboard:v0.3 dashboard
 
 up:
 	@echo "Starting services..."
 	@docker-compose up -d
 
+webup:
+	@echo "Starting webserver and linked services..."
+	@docker-compose up -d webserver
+
 stop:
 	@echo "Stopping services..."
 	@docker-compose stop
+
+down:
+	@echo "Downing services..."
+	@docker-compose down
 
 pull:
 	@echo "Downloading docker images for ALA modules..."
@@ -314,10 +322,10 @@ release: build push
 
 ssl-certs:
 	@echo "Generating SSL certs using https://hub.docker.com/r/paulczar/omgwtfssl/"
-	docker run --rm -v /tmp/certs:/certs -e SSL_SUBJECT=bioatlas.se paulczar/omgwtfssl
+	docker run --rm -v /tmp/certs:/certs -e SSL_SUBJECT=beta.vtatlasoflife.org paulczar/omgwtfssl
 	mkdir -p nginx-proxy-certs
 	cp /tmp/certs/ca.pem /tmp/certs/cert.pem /tmp/certs/key.pem nginx-proxy-certs
-	cd nginx-proxy-certs && mv key.pem bioatlas.se.key && mv cert.pem bioatlas.se.crt
+	cd nginx-proxy-certs && mv key.pem beta.vtatlasoflife.org.key && mv cert.pem beta.vtatlasoflife.org.crt
 
 	@echo "Using self-signed certificates will require either the CA cert to be imported system-wide or into apps"
 	@echo "if you don't do this, apps will fail to request data using SSL (https)"
@@ -325,11 +333,11 @@ ssl-certs:
 	@echo "WARNING! For curl to work, you need to provide '--cacert /tmp/certs/ca.pem' switch or SSL requests will fail."
 
 ssl-certs-clean:
-	rm -f nginx-proxy-certs/bioatlas.se.crt nginx-proxy-certs/bioatlas.se.key nginx-proxy-certs/ca.pem
+	rm -f nginx-proxy-certs/beta.vtatlasoflife.org.crt nginx-proxy-certs/beta.vtatlasoflife.org.key nginx-proxy-certs/ca.pem
 	sudo rm -rf /tmp/certs
 
 ssl-certs-show:
-	openssl x509 -noout -text -in nginx-proxy-certs/bioatlas.se.crt
+	openssl x509 -noout -text -in nginx-proxy-certs/beta.vtatlasoflife.org.crt
 
 test-nameindex:
 	docker run --rm -it bioatlas/ala-nameindex nameindexer -testSearch "Rattus norvegicus"
