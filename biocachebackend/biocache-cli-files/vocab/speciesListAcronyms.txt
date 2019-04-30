@@ -7,3 +7,10 @@ TAS	Tasmania
 VIC	Victoria
 WA	Western Australia
 AUS	Australian Government
+VT	Vermont
+USA	United States of America
+VCE	Vermont Center for Ecostudies
+NH	New Hampshire
+NY	New York
+MA	Massachusetts
+CA	Canada

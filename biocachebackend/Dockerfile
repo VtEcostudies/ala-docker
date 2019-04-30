@@ -22,7 +22,8 @@ RUN mkdir -m 0774 -p \
 
 RUN mkdir -p /usr/lib/biocache
 COPY biocache-cli-files/log4j.xml /usr/lib/biocache/log4j.xml
-COPY biocache-cli-files/vocab /data/biocache/vocab
+#COPY biocache-cli-files/vocab /data/biocache/vocab
+COPY biocache-cli-files/vocab /data/biocache
 COPY biocache.zip /usr/lib/biocache/biocache.zip
 RUN unzip /usr/lib/biocache/biocache.zip -d /usr/lib/biocache/
 RUN ln -s /usr/lib/biocache/biocache-store-2.4.1/bin/biocache /usr/bin/biocache

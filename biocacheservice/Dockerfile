@@ -45,3 +45,6 @@ RUN mkdir -m 0774 -p \
 RUN apk add --update tini
 ENTRYPOINT ["tini", "--"]
 CMD ["catalina.sh", "run"]
+
+#jtl add this
+VOLUME /data

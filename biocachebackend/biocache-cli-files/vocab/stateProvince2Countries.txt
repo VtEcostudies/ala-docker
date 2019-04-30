@@ -1,3 +1,7 @@
+Vermont	USA
+New Hampshire	USA
+New York	USA
+Massachusetts	USA
 Australian Capital Territory	Australia
 New South Wales	Australia
 Northern Territory	Australia

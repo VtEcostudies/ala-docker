@@ -1,3 +1,7 @@
+Vermont	VT
+New Hampshire	NH
+New York	NY
+Massachusetts	MA
 Australian Capital Territory	AustCapitalTerritory	AustCapitalTerrit	AusCap	AusCapTerrit	ACT	Jervis Bay Territory	Australian Captial Territory
 New South Wales	nswales	nsw	New South Wales (including Coastal Waters)
 Northern Territory	nterritory	nterrit	nt	Northern Territory (including Coastal Waters)
