@@ -33,7 +33,7 @@ URL_CAS2 = https://github.com/bioatlas/ala-cas-2.0/releases/download/v0.1/cas.wa
 URL_USERDETAILS = https://github.com/bioatlas/userdetails/releases/download/bioatlas-1.0.0/userdetails-1.0.0.war
 URL_APIKEY = https://github.com/bioatlas/apikey/releases/download/1.4-SNAPSHOT/apikey-1.4-SNAPSHOT.war
 URL_JTS = http://central.maven.org/maven2/org/locationtech/jts/jts-core/1.15.0/jts-core-1.15.0.jar
-URL_DYNTAXA = https://api.artdatabanken.se/taxonservice/v1/DarwinCore/DarwinCoreArchiveFile?Subscription-Key=4b068709e7f2427d9fc76bf42d8e2b57
+#URL_DYNTAXA = https://api.artdatabanken.se/taxonservice/v1/DarwinCore/DarwinCoreArchiveFile?Subscription-Key=4b068709e7f2427d9fc76bf42d8e2b57
 URL_DASHBOARD = https://nexus.ala.org.au/service/local/repositories/releases/content/au/org/ala/dashboard/2.1.1/dashboard-2.1.1.war
 
 all: init build dotfiles up
@@ -118,11 +118,11 @@ init: theme-dl
 	@test -f solr7/lib/jts-core-1.15.0.jar || \
 		wget -q --show-progress -O solr7/lib/jts-core-1.15.0.jar $(URL_JTS)
 
-	@test -f dyntaxa-index/dyntaxa.dwca.zip || \
-		wget -q --show-progress -O dyntaxa-index/dyntaxa.dwca.zip $(URL_DYNTAXA)
+#	@test -f dyntaxa-index/dyntaxa.dwca.zip || \
+#		wget -q --show-progress -O dyntaxa-index/dyntaxa.dwca.zip $(URL_DYNTAXA)
 
-	@test -f dyntaxa-index/nameindexer.zip || \
-		wget -q --show-progress -O dyntaxa-index/nameindexer.zip $(URL_NAMESDIST)
+#	@test -f dyntaxa-index/nameindexer.zip || \
+#		wget -q --show-progress -O dyntaxa-index/nameindexer.zip $(URL_NAMESDIST)
 
 	@test -f dashboard/dashboard.war || \
 		wget -q --show-progress -O dashboard/dashboard.war $(URL_DASHBOARD)
@@ -277,7 +277,7 @@ pull:
 	@docker pull bioatlas/ala-apikey:v0.3
 	@docker pull bioatlas/ala-cassandra:v0.3
 	@docker pull bioatlas/ala-solr:v0.3
-	@docker pull bioatlas/ala-dyntaxaindex:v0.3
+#	@docker pull bioatlas/ala-dyntaxaindex:v0.3
 	@docker pull bioatlas/ala-nameindex:v0.3
 
 pull2:
@@ -315,7 +315,7 @@ push:
 	@docker push bioatlas/ala-apikey:v0.3
 	@docker push bioatlas/ala-cassandra:v0.3
 	@docker push bioatlas/ala-solr:v0.3
-	@docker push bioatlas/ala-dyntaxaindex:v0.3
+#	@docker push bioatlas/ala-dyntaxaindex:v0.3
 	@docker push bioatlas/ala-nameindex:v0.3
 
 release: build push

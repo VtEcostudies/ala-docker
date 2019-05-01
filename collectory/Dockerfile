@@ -29,3 +29,6 @@ RUN \
 RUN apk add --update tini
 ENTRYPOINT ["tini", "--"]
 CMD ["catalina.sh", "run"]
+
+#jtl add named volume
+VOLUME /data
