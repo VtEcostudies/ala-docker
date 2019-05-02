@@ -111,7 +111,9 @@ services:
       - data_nameindex:/data/lucene/namematching
 
   biocachebackend:
-    image: bioatlas/ala-biocachebackend:v0.5
+    #jtl revert to v2.2 of biocache store to avoid biocache load problem
+    #image: bioatlas/ala-biocachebackend:v0.5
+    image: bioatlas/ala-biocachebackend:v0.2
     container_name: biocachebackend
     links:
       - biocachehub
@@ -132,7 +134,8 @@ services:
     image: bioatlas/ala-solr:v0.3
     container_name: solr
     environment:
-      SOLR_HEAP: 4g
+      #jtl increase heap from 4 to 8
+      SOLR_HEAP: 8g
     volumes:
       - data_solr:/opt/solr
     ports:

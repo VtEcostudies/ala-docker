@@ -5,6 +5,7 @@ networks:
 
 volumes:
   db_data_collectory:
+  data_collectory:
   db_data_cassandra:
   db_data_loggerservice:
   db_data_imageservice:
@@ -14,7 +15,7 @@ volumes:
   data_biocachebackend:
   data_solr:
   data_images_elasticsearch:
-  db_data_wordpress:
+#  db_data_wordpress:
   db_data_specieslists:
   db_data_postgis:
   data_geoserver:
@@ -28,32 +29,35 @@ volumes:
 
 services:
 
-  proxy:
-    image: jwilder/nginx-proxy
-    container_name: nginx-proxy
-    init: true
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock
-      - ./nginx-proxy-certs:/etc/nginx/certs:ro
-      - ./nginx-proxy/nginx-proxy.conf:/etc/nginx/conf.d/nginx-proxy.conf
-    networks:
-      - basenet
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
+#  proxy:
+#    image: jwilder/nginx-proxy
+#    container_name: nginx-proxy
+#    init: true
+#    ports:
+#      - 80:80
+#      - 443:443
+#    volumes:
+#      - /var/run/docker.sock:/tmp/docker.sock
+#      - ./nginx-proxy-certs:/etc/nginx/certs:ro
+#      - ./nginx-proxy/nginx-proxy.conf:/etc/nginx/conf.d/nginx-proxy.conf
+#    networks:
+#      - basenet
+#    deploy:
+#      placement:
+#        constraints:
+#          - node.role == manager
 
   webserver:
     image: nginx:alpine
     container_name: webserver
     environment:
-      - VIRTUAL_HOST=beta.vtatlasoflife.org,auth.bioatlas.se
+      - VIRTUAL_HOST=beta.vtatlasoflife.org
+    ports:
+      - 80:80
     volumes:
-      #- ./env/.htpasswd:/etc/nginx/htpasswd
+      - ./env/.htpasswd:/etc/nginx/htpasswd
       - ./webserver/app.conf:/etc/nginx/conf.d/app.conf:ro
+      - ./webserver/www-val-data-portal:/var/www/html:ro
     networks:
       - basenet
 
@@ -138,6 +142,7 @@ services:
     env_file: ./env/.envcollectory
     volumes:
       - ./config/ala-collectory-config.properties:/tmp/ala-collectory-config.properties:ro
+      - data_collectory:/data
     command: /bin/ash -c "envsubst < /tmp/ala-collectory-config.properties > /data/ala-collectory/config/ala-collectory-config.properties && catalina.sh run"
     networks:
       - basenet
@@ -162,7 +167,7 @@ services:
       - solr
     command: /bin/ash
     environment:
-      biocache_opts: -Xmx1g -Xms256m
+      biocache_opts: -Xmx8g -Xms1g
     volumes:
       - data_nameindex:/data/lucene/namematching
       - data_biocachebackend:/data
@@ -290,26 +295,26 @@ services:
     networks:
       - basenet
 
-  mysqldbwordpress:
-    image: mysql:5.7
-    container_name: mysqldbwordpress
-    env_file: ./env/.envwordpress
-    volumes:
-      - db_data_wordpress:/var/lib/mysql
-    networks:
-      - basenet
+#  mysqldbwordpress:
+#    image: mysql:5.7
+#    container_name: mysqldbwordpress
+#    env_file: ./env/.envwordpress
+#    volumes:
+#      - db_data_wordpress:/var/lib/mysql
+#    networks:
+#      - basenet
 
-  wordpress:
-    image: wordpress:4.9.5-apache
-    container_name: wordpress
-    ports:
-      - 8080:80
-    env_file: ./env/.envwordpress
-    volumes:
-      - ./wordpress/themes/atlas/bioatlas-wordpress-theme-master:/var/www/html/wp-content/themes/atlas
-      - ./wordpress/wp-config-sample.php:/usr/src/wordpress/wp-config-sample.php:ro
-    networks:
-      - basenet
+#  wordpress:
+#    image: wordpress:4.9.5-apache
+#    container_name: wordpress
+#    ports:
+#      - 8080:80
+#    env_file: ./env/.envwordpress
+#    volumes:
+#      - ./wordpress/themes/atlas/bioatlas-wordpress-theme-master:/var/www/html/wp-content/themes/atlas
+#      - ./wordpress/wp-config-sample.php:/usr/src/wordpress/wp-config-sample.php:ro
+#    networks:
+#      - basenet
 
   specieslists:
     image: bioatlas/ala-specieslists:v0.3
